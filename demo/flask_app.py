@@ -1,11 +1,14 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.realpath("{}/..".format(__file__))))
 from flask import Flask, request, abort
 from functools import wraps
 from secret import secret
-from auth.flask import TokenAuth
+from service_auth.flask import AuthHeader
 
 app = Flask(__name__)
 
-service_auth = TokenAuth(secret)
+service_auth = AuthHeader(secret)
 
 @app.before_request
 def authenticate_request():

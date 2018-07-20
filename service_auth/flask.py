@@ -1,9 +1,9 @@
 from flask import request, abort
 from flask import current_app as app
 from email.utils import formatdate
-from auth.http_token import validate_token, make_token
+from service_auth.http_token import validate_token, make_token
 
-class TokenAuth():
+class AuthHeader():
     def __init__(self, secret):
         self._secret = secret
 
