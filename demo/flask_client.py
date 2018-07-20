@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(os.path.realpath("{}/..".format(__file__))))
 import requests as rq
 from secret import secret
@@ -8,6 +9,7 @@ from service_auth.http_token import make_token, validate_token
 
 url = "http://localhost:8007"
 data = "this is a request!"
+auth_header = "X-Token-Auth"
 s = rq.Session()
 
 
@@ -21,17 +23,19 @@ def prepare_request():
 
 
 def add_auth(request):
-    request.headers["X-ATAT-Auth"] = make_token(
-        secret, [request.headers["Date"], request.headers["Host"], data]
+    request.headers[auth_header] = make_token(
+        secret, [request.headers["Date"], request.headers["Host"], request.body]
     )
     return request
+
 
 class BadHostError(Exception):
     pass
 
+
 def validate_response(resp, *args, **kwargs):
     print("Validating response from host...")
-    auth_token = resp.headers.get("X-ATAT-Auth")
+    auth_token = resp.headers.get(auth_header)
     date = resp.headers.get("Date")
     code = str(resp.status_code)
     body = resp.text
