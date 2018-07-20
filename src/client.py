@@ -1,7 +1,7 @@
 import requests as rq
 from secret import secret
 from email.utils import formatdate
-from http_token import make_token, validate_token
+from auth.http_token import make_token, validate_token
 
 url = "http://localhost:8007"
 data = "this is a request!"
